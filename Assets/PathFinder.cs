@@ -17,7 +17,7 @@ public class PathFinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        FindAdjacentGrid();
     }
 
     void LoadBlocks() {
@@ -42,17 +42,40 @@ public class PathFinder : MonoBehaviour
         }
         else
         {
-            grid.Add(gridPos, waypoint);
+           
+            grid.Add(gridPos, waypoint);        //adds coordinates and waypoint object
 
-            int gSize = waypoint.GetGridSize();
-            if (gridPos/gSize == start)
+       
+            if (gridPos == start)
             {
-                waypoint.SetTopColor(Color.black);
+                waypoint.SetTopColor( Color.black);
             }
-            if(gridPos/gSize==end){
+            if(gridPos==end){
                 waypoint.SetTopColor(Color.white);
             }
 
         }
+    }
+
+
+    void FindAdjacentGrid()
+    {
+        Vector2Int[] adjacentPositions = { new Vector2Int(0, 1)
+    , new Vector2Int(0, -1),  new Vector2Int(1, 0),new Vector2Int(-1, 0)};
+          
+        foreach (Vector2Int adjacent in adjacentPositions)
+        {
+            var sumStartAndAdjacent = start + adjacent;
+            print("Start + Adjacent " + sumStartAndAdjacent);
+            if (grid.ContainsKey(sumStartAndAdjacent))
+            {
+                grid[sumStartAndAdjacent].SetTopColor(Color.blue);
+
+            }
+
+
+        }
+
+
     }
 }
