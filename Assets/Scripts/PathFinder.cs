@@ -15,9 +15,9 @@ public class PathFinder : MonoBehaviour
 
     private void Awake()
     {
-        //queueCoordinate.Enqueue(start);
+  
         LoadBlocks();
-        //FindPath();
+
     }
 
     // Start is called before the first frame update
@@ -115,7 +115,7 @@ public class PathFinder : MonoBehaviour
     public void FindShortestPath()
     {
         var currentPoint = grid[end];
-        print(currentPoint.name);
+        //print(currentPoint.name);
         while (currentPoint != grid[start])
         {
             shortestPath.Add(currentPoint);
@@ -159,7 +159,7 @@ public class PathFinder : MonoBehaviour
                     nextWaypoint.exploredFrom= currentWaypoint;
                    
                     nextWaypoint.isSearched = true;
-                    //print("Queuing " + sumPosAndAdjecent);
+                  
                     queueCoordinate.Enqueue(sumPosAndAdjecent);
                 }
 

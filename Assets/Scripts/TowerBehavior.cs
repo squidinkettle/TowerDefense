@@ -21,7 +21,6 @@ public class TowerBehavior : MonoBehaviour
     {
 
         waypoint = GetComponent<Waypoint>();
-        pathfinder = FindObjectOfType<PathFinder>();
 
        
        
@@ -33,62 +32,64 @@ public class TowerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ShootClosestEnemy();
+        IterateEnemies();
 
     }
 
-    void ShootClosestEnemy()
+    void IterateEnemies()
     {
         var particles = bullets.GetComponent<ParticleSystem>().emission;
         enemies = FindObjectsOfType<Enemy>();
-        foreach(Enemy enemy in enemies)
+
+        foreach (Enemy enemy in enemies)
+            particles.enabled = ShootClosestEnemy(particles, enemy);
+
+        if (enemies.Length == 0)
         {
-            var distanceToTower = Vector3.Distance(enemy.transform.position, gameObject.transform.position);
-            if (distanceToTower < range)
-            {
-
-                particles.enabled = true;
-
-
-
-                LookAtEnemy();
-            }
-            else
-            {
-                particles.enabled = false;
-            }
-
-
-
-
-
-        }
-
-        if (enemies.Length==0)
-        {
+            print(enemies.Length);
             particles.enabled = false;
         }
 
     }
 
-
-
-    void LookAtEnemy()
+    private bool ShootClosestEnemy(ParticleSystem.EmissionModule particles, Enemy enemy)
     {
-        foreach(Enemy enemy in enemies)
+        var distanceToTower = Vector3.Distance(enemy.transform.position, gameObject.transform.position);
+
+       if (distanceToTower < range)
         {
-            var distanceToEnemy= Vector3.Distance(enemy.transform.position, gameObject.transform.position);
-            if(distanceToEnemy < range)
-            {
-                float yOffset = 5;
-                Vector3 enemyPos = new Vector3(
-                enemy.transform.position.x,
-                    enemy.transform.position.y + yOffset,
-                enemy.transform.position.z);
-                objectToPan.transform.LookAt(enemyPos);
-          
-            }
+      
+            LookAtEnemy(enemy);
+            return  true;
+
         }
+        else
+        {
+            return false;
+        }
+
+
+    }
+
+
+
+    void LookAtEnemy(Enemy enemy)
+    {
+       
+        var distanceToEnemy= Vector3.Distance(enemy.transform.position, gameObject.transform.position);
+        if(distanceToEnemy < range)
+        {
+            float yOffset = 5;
+
+            Vector3 enemyPos = new Vector3(
+            enemy.transform.position.x,
+            enemy.transform.position.y + yOffset,
+            enemy.transform.position.z);
+
+            objectToPan.transform.LookAt(enemyPos);
+      
+        }
+        
 
 
     }
