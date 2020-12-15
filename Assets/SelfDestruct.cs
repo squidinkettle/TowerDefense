@@ -2,27 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class SelfDestruct : MonoBehaviour
 {
-
-    [SerializeField] int maxHealth;
-    int health;
-
     // Start is called before the first frame update
     void Start()
     {
-        health = maxHealth;
+        Destroy(gameObject, 5f);
     }
 
-    void SetHealth(int change)
-    {
-        health -= change;
-    }
-
-    void StartDeath()
+    private void OnCollisionEnter(Collision collision)
     {
         Destroy(gameObject);
+
     }
+
 
     // Update is called once per frame
     void Update()

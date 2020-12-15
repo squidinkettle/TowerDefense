@@ -15,9 +15,9 @@ public class PathFinder : MonoBehaviour
 
     private void Awake()
     {
-        queueCoordinate.Enqueue(start);
+        //queueCoordinate.Enqueue(start);
         LoadBlocks();
-        FindPath();
+        //FindPath();
     }
 
     // Start is called before the first frame update
@@ -28,15 +28,24 @@ public class PathFinder : MonoBehaviour
    
    
     }
+    public void SetQueueStart(Vector2Int startP)
+    {
+        queueCoordinate.Enqueue(startP);
+    }
+
 
     // Update is called once per frame
     void Update()
     {
        
     }
-    void setStartPath(Vector2Int startPath)
+    public void setStartPath(Vector2Int startPath)
     {
         start = startPath;
+    }
+    public void setEndPath(Vector2Int endPath)
+    {
+        end = endPath;
     }
 
     void LoadBlocks() {
@@ -56,6 +65,7 @@ public class PathFinder : MonoBehaviour
 
     private void FillGridInformation(Waypoint waypoint)
     {
+
         var gridPos = waypoint.GetGridPos();
 
         if (grid.ContainsKey(gridPos))
@@ -80,6 +90,7 @@ public class PathFinder : MonoBehaviour
     }
     public void FindPath()
     {
+        print(start + " " + end);
         while (queueCoordinate.Count>0)
         {
 

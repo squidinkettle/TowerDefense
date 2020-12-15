@@ -7,7 +7,8 @@ public class EnemyMovement : MonoBehaviour
 {
     PathFinder pathfinder;
     List<Waypoint> path=new List<Waypoint>();
-    [SerializeField]Vector2Int startPos;
+
+    [SerializeField] Vector2Int startPos;
     [SerializeField] Vector2Int endPos;
 
 
@@ -25,6 +26,13 @@ public class EnemyMovement : MonoBehaviour
     private void StartPath()
     {
         pathfinder = FindObjectOfType<PathFinder>();
+
+        pathfinder.setStartPath(startPos);
+        pathfinder.setEndPath(endPos);
+        pathfinder.SetQueueStart(startPos);
+        pathfinder.FindPath();
+
+
         var startingPosition = pathfinder.start;
         var pathfindingGrid = pathfinder.grid;
         var shortestPath = pathfinder.shortestPath;
@@ -39,15 +47,22 @@ public class EnemyMovement : MonoBehaviour
 
     IEnumerator PrintAllWayPoints()
     {
-        //print("Starting Patrol...");
+  
         foreach (Waypoint waypoint in path)
         {
-            //print("Visiting"+waypoint.name);
             transform.position = waypoint.transform.position;
             yield return new WaitForSeconds(1f);
         }
-        //print("...Ending Patrol");
+
     }
+
+
+    public void SetStartEndPosition(Vector2Int startP, Vector2Int endP)
+    {
+        startPos = startP;
+        endPos = endP;
+    }
+ 
 
     // Update is called once per frame
     void Update()
