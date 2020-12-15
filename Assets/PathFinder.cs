@@ -1,32 +1,54 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PathFinder : MonoBehaviour
 {
-    Dictionary<Vector2Int, Waypoint> grid = new Dictionary<Vector2Int, Waypoint>();
+    public Dictionary<Vector2Int, Waypoint> grid = new Dictionary<Vector2Int, Waypoint>();
 
-    [SerializeField] Vector2Int start, end=new Vector2Int();
+    public Vector2Int start, end=new Vector2Int();
+
+    Queue<Vector2Int> queueCoordinate = new Queue<Vector2Int>();
+
+    public List<Waypoint> shortestPath = new List<Waypoint>();
+
+    private void Awake()
+    {
+        queueCoordinate.Enqueue(start);
+        LoadBlocks();
+        FindPath();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        LoadBlocks();   
+
+    
+   
+   
     }
 
     // Update is called once per frame
     void Update()
     {
-        FindAdjacentGrid();
+       
+    }
+    void setStartPath(Vector2Int startPath)
+    {
+        start = startPath;
     }
 
     void LoadBlocks() {
 
         var waypoints = FindObjectsOfType<Waypoint>();
-
+        
         foreach(Waypoint waypoint in waypoints)
         {
-            FillGridInformation(waypoint);
+            if (waypoint.tag != "Obstacle")
+            {
+                FillGridInformation(waypoint);
+            }
 
         }
 
@@ -56,20 +78,79 @@ public class PathFinder : MonoBehaviour
 
         }
     }
-
-
-    void FindAdjacentGrid()
+    public void FindPath()
     {
-        Vector2Int[] adjacentPositions = { new Vector2Int(0, 1)
-    , new Vector2Int(0, -1),  new Vector2Int(1, 0),new Vector2Int(-1, 0)};
+        while (queueCoordinate.Count>0)
+        {
+
+            var newPos=queueCoordinate.Dequeue();
+
+            if (newPos == end) 
+            {
+                FindAdjacentGrid(newPos);
+                queueCoordinate.Clear();
+                FindShortestPath();
+                break; 
+            }
+
+            FindAdjacentGrid(newPos);
+
+        }
+
+
+
+    }
+
+    public void FindShortestPath()
+    {
+        var currentPoint = grid[end];
+        print(currentPoint.name);
+        while (currentPoint != grid[start])
+        {
+            shortestPath.Add(currentPoint);
+            currentPoint = currentPoint.exploredFrom;
+        }
+
+        foreach (Waypoint point in shortestPath)
+        {
+            point.SetTopColor(Color.cyan);
+        }
+
+    }
+
+    void FindAdjacentGrid(Vector2Int pos)
+    {
+        Vector2Int[] adjacentPositions = {
+         Vector2Int.up,
+         Vector2Int.down,  
+         Vector2Int.right,
+         Vector2Int.left
+         };
           
         foreach (Vector2Int adjacent in adjacentPositions)
         {
-            var sumStartAndAdjacent = start + adjacent;
-            print("Start + Adjacent " + sumStartAndAdjacent);
-            if (grid.ContainsKey(sumStartAndAdjacent))
+            var sumPosAndAdjecent = pos + adjacent;
+
+
+            if (grid.ContainsKey(sumPosAndAdjecent))
             {
-                grid[sumStartAndAdjacent].SetTopColor(Color.blue);
+                var nextWaypoint = grid[sumPosAndAdjecent];
+                var currentWaypoint = grid[pos];
+
+
+                nextWaypoint.SetTopColor(Color.blue);
+
+
+
+                if (!queueCoordinate.Contains(sumPosAndAdjecent) && nextWaypoint.isSearched==false)
+                {
+
+                    nextWaypoint.exploredFrom= currentWaypoint;
+                   
+                    nextWaypoint.isSearched = true;
+                    //print("Queuing " + sumPosAndAdjecent);
+                    queueCoordinate.Enqueue(sumPosAndAdjecent);
+                }
 
             }
 

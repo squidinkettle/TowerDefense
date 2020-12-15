@@ -6,6 +6,9 @@ public class Waypoint : MonoBehaviour
 {
     Vector3Int gridPos;
     const int gridSize = 10;
+    public bool isSearched=false;
+    public bool isObstacle = false;
+    public Waypoint exploredFrom;
 
     // Update is called once per frame
     void Update()
