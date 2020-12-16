@@ -4853,6 +4853,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6785967609637818676}
   - component: {fileID: 1292007032101848820}
+  - component: {fileID: 253695249}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -4888,10 +4889,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e943bd0d9c50a4dce91dd278fcccc0a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 25
+  range: 30
   rateOfFire: 1
   objectToPan: {fileID: 6074836593211199318}
   bullets: {fileID: -3616063766064907923}
+--- !u!65 &253695249
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5723053989800073390}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.3575172, y: 11.499939, z: 6.5093822}
+  m_Center: {x: 0.05512047, y: 5.2499695, z: -0.2298441}
 --- !u!1001 &6073906445409049424
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,18 +12,18 @@ public class TowerBehavior : MonoBehaviour
     [SerializeField] GameObject objectToPan;
     [SerializeField] GameObject bullets;
     Vector3 defaultPos;
+    Transform closestEnemy;
 
 
 
-    Enemy[] enemies;
+    Enemy[] enemiesInMap;
     // Start is called before the first frame update
     void Start()
     {
 
         waypoint = GetComponent<Waypoint>();
 
-        StartCoroutine(ShootAtEnemies());
-       
+
 
     }
 
@@ -32,96 +32,88 @@ public class TowerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //IterateEnemies();
+        IterateEnemies();
 
     }
 
     void IterateEnemies()
     {
-        var particles = bullets.GetComponent<ParticleSystem>().emission;
-        enemies = FindObjectsOfType<Enemy>();
+        enemiesInMap = FindObjectsOfType<Enemy>();
 
-        foreach (Enemy enemy in enemies)
-            particles.enabled = ShootClosestEnemy(particles, enemy);
+        if(enemiesInMap.Length>0)
+            closestEnemy = enemiesInMap[0].transform;
 
-        if (enemies.Length == 0)
+        foreach (Enemy enemy in enemiesInMap)
         {
-            print(enemies.Length);
-            particles.enabled = false;
+            closestEnemy = GetClosestEnemy(closestEnemy, enemy);
         }
+        LookAtEnemy(closestEnemy);
+
+    
 
     }
 
-    private bool ShootClosestEnemy(ParticleSystem.EmissionModule particles, Enemy enemy)
+    private Transform GetClosestEnemy(Transform closeEnemy, Enemy enemy)
     {
-        var distanceToTower = Vector3.Distance(enemy.transform.position, gameObject.transform.position);
+        var distanceToNewEnemy = Vector3.Distance(gameObject.transform.position, enemy.transform.position);
+        var distanceToCurrentEnemy = Vector3.Distance(gameObject.transform.position, closeEnemy.position);
 
-       if (distanceToTower < range)
+        if (distanceToNewEnemy < distanceToCurrentEnemy)
         {
-      
-            LookAtEnemy(enemy);
-            return  true;
-
+            return enemy.transform;
         }
         else
         {
-            return false;
+            return closeEnemy;
         }
-
 
     }
 
-
-
-    void LookAtEnemy(Enemy enemy)
+    private void OnMouseOver()
     {
+        print(gameObject.name);
+    }
+
+    void LookAtEnemy(Transform enemy)
+    {
+        var particles = bullets.GetComponent<ParticleSystem>().emission;
+
         if (enemy != null)
         {
             var distanceToEnemy = Vector3.Distance(enemy.transform.position, gameObject.transform.position);
             if (distanceToEnemy < range)
             {
-                var particles = bullets.GetComponent<ParticleSystem>().emission;
-                float yOffset = 5;
-
-                Vector3 enemyPos = new Vector3(
-                enemy.transform.position.x,
-                enemy.transform.position.y + yOffset,
-                enemy.transform.position.z);
-
-                objectToPan.transform.LookAt(enemyPos);
+                SetupParticleEmission(enemy, particles);
 
             }
-
-        }
-
-    }
-    IEnumerator ShootAtEnemies()
-    {
-        while (true)
-        {
-            print("in enumerator");
-            enemies = FindObjectsOfType<Enemy>();
-            print("Number of enemies:" + enemies.Length);
-            var particles = bullets.GetComponent<ParticleSystem>().emission;
-            foreach (Enemy enemy in enemies)
+            else
             {
-                var enemyDistance = Vector3.Distance(gameObject.transform.position, enemy.transform.position);
-                print("Range: " + range + "Distance: " + enemyDistance);
-                while (enemyDistance < range)
-                {
-                    LookAtEnemy(enemy);
-                    particles.enabled = true;
-
-                    yield return null;
-
-                }
                 particles.enabled = false;
-                yield return null;
             }
 
-            yield return new WaitForSeconds(0.2f);
+        }
+        else
+        {
+            particles.enabled = false;
         }
 
     }
+
+    private void SetupParticleEmission(Transform enemy, ParticleSystem.EmissionModule particles)
+    {
+        particles.enabled = true;
+        particles.rateOverTime = rateOfFire;
+        float yOffset = 5;
+
+        Vector3 enemyPos = new Vector3(
+
+        enemy.transform.position.x,
+        enemy.transform.position.y + yOffset,
+        enemy.transform.position.z);
+
+        objectToPan.transform.LookAt(enemyPos);
+    }
+
+  
 
 }

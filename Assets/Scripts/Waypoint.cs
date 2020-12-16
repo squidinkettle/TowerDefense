@@ -15,6 +15,10 @@ public class Waypoint : MonoBehaviour
     {
         
     }
+    private void OnMouseOver()
+    {
+        print(gameObject.name);
+    }
     public Vector2Int GetGridPos()
     {
         return new Vector2Int(

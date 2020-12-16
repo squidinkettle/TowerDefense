@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8729126454200219730}
   - component: {fileID: 6448439577351723478}
   - component: {fileID: 7657929508023182199}
+  - component: {fileID: 214016805}
   m_Layer: 0
   m_Name: QCube
   m_TagString: Untagged
@@ -60,6 +61,19 @@ MonoBehaviour:
   isSearched: 0
   isObstacle: 0
   exploredFrom: {fileID: 0}
+--- !u!65 &214016805
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2202629098697628404}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4139026179745783770
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +253,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9130321491569634679}
-  m_Text: 6,-2
+  m_Text: 3,-1
   m_OffsetZ: 0
   m_CharacterSize: 2
   m_LineSpacing: 1
