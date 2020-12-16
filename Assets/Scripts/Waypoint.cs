@@ -31,7 +31,7 @@ public class Waypoint : MonoBehaviour
             if (!isPath)
             {
                 Vector3 towerPos = SetTowerPosition();
-                towerFactory.InstantiateOnCube(towerPos);
+                towerFactory.Add(this, towerPos);
                 //                print(gameObject.name + " clicked");
                 isPath = true;
             }

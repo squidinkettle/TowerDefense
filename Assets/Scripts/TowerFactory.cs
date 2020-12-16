@@ -6,6 +6,10 @@ public class TowerFactory : MonoBehaviour
 {
     [SerializeField] TowerBehavior towerPrefab;
     [SerializeField] int queueSize;
+    [SerializeField] Transform towerParent;
+
+
+    //public Waypoint towerWaypoint;
     Queue<TowerBehavior> towers;
     // Start is called before the first frame update
     void Start()
@@ -13,10 +17,13 @@ public class TowerFactory : MonoBehaviour
         CircularBuffer(queueSize);
     }
 
-    public void InstantiateOnCube(Vector3 cubePos)
+    public void InstantiateOnCube(Vector3 cubePos, Waypoint wp)
     {
         TowerBehavior newTower=Instantiate(towerPrefab, cubePos, Quaternion.identity);
-        Add(newTower);
+        newTower.transform.parent = towerParent;
+        newTower.waypoint = wp;
+        towers.Enqueue(newTower);
+       
     }
 
     void CircularBuffer(int size)
@@ -24,19 +31,25 @@ public class TowerFactory : MonoBehaviour
         towers = new Queue<TowerBehavior>(size);
 
     }
-    void Add(TowerBehavior tower)
+    public void Add(Waypoint wp, Vector3 cubePos)
     {
         int numTowers = towers.Count;
+        print(numTowers);
         if (numTowers >= queueSize)
         {
             print("Enqueued and dequeued");
-            towers.Enqueue(tower);
-            towers.Dequeue();
+            var oldTower = towers.Dequeue();
+            oldTower.waypoint.isPath = false;
+            oldTower.waypoint = wp;
+            oldTower.transform.position = cubePos;
+
+            towers.Enqueue(oldTower);
+
         }
         else
         {
             print("enqueued only");
-            towers.Enqueue(tower);
+            InstantiateOnCube(cubePos,wp);
         }
 
     }

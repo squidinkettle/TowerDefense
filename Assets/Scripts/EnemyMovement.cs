@@ -10,11 +10,16 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField] Vector2Int startPos;
     [SerializeField] Vector2Int endPos;
+    [SerializeField] float enemySpeed=10f;
+    [SerializeField] ParticleSystem damageBase;
+
+    PlayerBase playerBase;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        playerBase = FindObjectOfType<PlayerBase>();
         var enemyBase = FindObjectOfType<EnemyBase>();
 
 
@@ -24,8 +29,17 @@ public class EnemyMovement : MonoBehaviour
 
         StartCoroutine(PrintAllWayPoints(time));
     }
-    void DestroyWhenReachesEnd()
+    public void DestroyWhenReachesEnd()
     {
+        Vector3 newPos = new Vector3(
+        transform.position.x,
+        transform.position.y+10,
+        transform.position.z
+        );
+        var newExplosion=Instantiate(damageBase, newPos,Quaternion.identity);
+        newExplosion.Play();
+        Destroy(newExplosion.gameObject, newExplosion.main.duration);
+        playerBase.SetHealth(10);
         Destroy(gameObject);
     }
 
@@ -69,22 +83,26 @@ public class EnemyMovement : MonoBehaviour
         foreach (Waypoint waypoint in path)
         {
             var currentPos = transform.position;
-            var t = 0f;
-            while (t<0)
+            var speed = enemySpeed;
+            while (currentPos!=waypoint.transform.position)
             {
-                t += Time.deltaTime / 1f;
-                transform.position = Vector3.Lerp(currentPos, waypoint.transform.position, t);
+                var delta = Time.deltaTime * speed;
+                transform.position = Vector3.MoveTowards(transform.position, waypoint.transform.position, delta);
+                currentPos = transform.position;
+            
                 yield return null;
             }
-            transform.position = waypoint.transform.position;
-            var enemyHasReachedDestination = gameObject.transform.position == (pathfinder.grid[endPos].transform.position);
+
+            //transform.position = waypoint.transform.position;
+            var enemyHasReachedDestination = (transform.position == (pathfinder.grid[endPos].transform.position));
             if (enemyHasReachedDestination)
             {
+
                 DestroyWhenReachesEnd();
 
             }
-            yield return new WaitForSeconds(time);
         }
+        DestroyWhenReachesEnd();
 
     }
 

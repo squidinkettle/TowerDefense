@@ -9,13 +9,14 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] GameObject enemy;
     [SerializeField] int numberOfWaves;
     [SerializeField] float timer;
+    [SerializeField] Transform enemyParent;
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(SpawnEnemies());
     }
 
-  
+    
 
     IEnumerator SpawnEnemies()
     {
@@ -43,26 +44,13 @@ public class EnemyBase : MonoBehaviour
     {
         var numberOfStartingCoordinates = startSpawnPosition.Length;
 
-        switch (numberOfStartingCoordinates)
+
+        for(int x = 0; x < numberOfStartingCoordinates; x++)
         {
-            case 1:
-                GenerateEnemies(startSpawnPosition[0], endPosition[0]);
-                break;
-            case 2:
-                {
-       
-                    GenerateEnemies(startSpawnPosition[0], endPosition[0]);
-   
-                    GenerateEnemies(startSpawnPosition[1], endPosition[1]);
-                }
-
-                break;
-            case 3:
-                break;
-            default:
-                break;
-
+            GenerateEnemies(startSpawnPosition[x], endPosition[x]);
         }
+
+
 
 
 
@@ -74,12 +62,15 @@ public class EnemyBase : MonoBehaviour
         PathFinder pathfind = FindObjectOfType<PathFinder>();
      
         GameObject newEnemy=Instantiate (enemy, transform.position,Quaternion.identity);
-
+        newEnemy.transform.parent = enemyParent;
         newEnemy.GetComponent<EnemyMovement>().SetStartEndPosition(start,end);
 
     }
 
-
+    public int GetWaves()
+    {
+        return numberOfWaves;
+    }
 
     // Update is called once per frame
     void Update()

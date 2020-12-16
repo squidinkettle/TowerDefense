@@ -6,7 +6,7 @@ using UnityEngine;
 public class TowerBehavior : MonoBehaviour
 {
     PathFinder pathfinder;
-    Waypoint waypoint;
+    public Waypoint waypoint;
     [SerializeField] float range;
     [SerializeField] float rateOfFire;
     [SerializeField] GameObject objectToPan;
@@ -21,7 +21,6 @@ public class TowerBehavior : MonoBehaviour
     void Start()
     {
 
-        waypoint = GetComponent<Waypoint>();
 
 
 

@@ -3734,7 +3734,7 @@ ParticleSystem:
     m_EnergyLossOnCollision:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4889,8 +4889,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e943bd0d9c50a4dce91dd278fcccc0a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waypoint: {fileID: 0}
   range: 30
-  rateOfFire: 1
+  rateOfFire: 50
   objectToPan: {fileID: 6074836593211199318}
   bullets: {fileID: -3616063766064907923}
 --- !u!65 &253695249

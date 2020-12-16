@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] int maxHealth;
     [SerializeField] ParticleSystem particlesDeath;
     [SerializeField] ParticleSystem particleHit;
+
+    [SerializeField] Transform fxParent;
     int health;
 
 
@@ -15,6 +17,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        fxParent = FindObjectOfType<TrashHandler>().transform;
         health = maxHealth;
     }
 
@@ -22,7 +25,8 @@ public class Enemy : MonoBehaviour
     {
         health -= change;
         Vector3 enemyPosition = GetInstantiatePosition(12f);
-        Instantiate(particleHit, enemyPosition, Quaternion.identity);
+        var particleH=Instantiate(particleHit, enemyPosition, Quaternion.identity);
+        particleH.transform.parent = fxParent;
         if (health <= 0)
         {
             StartDeath();
@@ -39,8 +43,11 @@ public class Enemy : MonoBehaviour
     void StartDeath()
     {
         Vector3 enemyPos = GetInstantiatePosition(10f);
-        Instantiate(particlesDeath, enemyPos, Quaternion.identity);
-        Destroy(gameObject);
+        var fx=Instantiate(particlesDeath, enemyPos, Quaternion.identity);
+        fx.Play();
+        Destroy(fx.gameObject, fx.main.duration);
+        fx.transform.parent = fxParent;
+        Destroy(gameObject, 2f);
     }
 
     private Vector3 GetInstantiatePosition(float offset)
