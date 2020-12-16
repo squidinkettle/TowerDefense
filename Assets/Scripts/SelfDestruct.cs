@@ -7,14 +7,10 @@ public class SelfDestruct : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, 2f);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Destroy(gameObject);
-
-    }
+  
 
 
     // Update is called once per frame

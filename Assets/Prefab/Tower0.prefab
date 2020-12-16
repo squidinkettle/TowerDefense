@@ -4767,7 +4767,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6aeffc52a425b4edd978396862d9e926, type: 2}
+  - {fileID: 2100000, guid: b5fdbb1d0f5374cd9925eab0238603fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4855,7 +4855,7 @@ GameObject:
   - component: {fileID: 1292007032101848820}
   - component: {fileID: 253695249}
   m_Layer: 0
-  m_Name: Tower
+  m_Name: Tower0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

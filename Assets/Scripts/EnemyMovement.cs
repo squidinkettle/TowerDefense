@@ -68,6 +68,14 @@ public class EnemyMovement : MonoBehaviour
   
         foreach (Waypoint waypoint in path)
         {
+            var currentPos = transform.position;
+            var t = 0f;
+            while (t<0)
+            {
+                t += Time.deltaTime / 1f;
+                transform.position = Vector3.Lerp(currentPos, waypoint.transform.position, t);
+                yield return null;
+            }
             transform.position = waypoint.transform.position;
             var enemyHasReachedDestination = gameObject.transform.position == (pathfinder.grid[endPos].transform.position);
             if (enemyHasReachedDestination)

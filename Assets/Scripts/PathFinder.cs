@@ -121,6 +121,7 @@ public class PathFinder : MonoBehaviour
         var currentPoint = grid[end];
         while (currentPoint != grid[start])
         {
+            currentPoint.isPath = true;
             shortestPath.Add(currentPoint);
             currentPoint = currentPoint.exploredFrom;
         }
