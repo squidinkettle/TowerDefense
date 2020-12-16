@@ -146,7 +146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 933002758, guid: 37ecf30468607124aafd21227190c343, type: 3}
       propertyPath: numberOfWaves
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 933002758, guid: 37ecf30468607124aafd21227190c343, type: 3}
       propertyPath: endPosition.Array.data[0].y

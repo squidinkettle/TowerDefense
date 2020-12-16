@@ -50,9 +50,9 @@ public class EnemyBase : MonoBehaviour
                 break;
             case 2:
                 {
-                    //print("First Group: "+ startSpawnPosition[0]+ endPosition[0]);
+       
                     GenerateEnemies(startSpawnPosition[0], endPosition[0]);
-                    //print("Second Group: ");
+   
                     GenerateEnemies(startSpawnPosition[1], endPosition[1]);
                 }
 
@@ -72,11 +72,7 @@ public class EnemyBase : MonoBehaviour
     void GenerateEnemies(Vector2Int start,Vector2Int end )
     {
         PathFinder pathfind = FindObjectOfType<PathFinder>();
-        //pathfind.setStartPath(start);
-        //pathfind.setEndPath(end);
-        //pathfind.SetQueueStart(start);
-
-        //print("starting pos:" + start + "ending pos: " + end);
+     
         GameObject newEnemy=Instantiate (enemy, transform.position,Quaternion.identity);
 
         newEnemy.GetComponent<EnemyMovement>().SetStartEndPosition(start,end);
