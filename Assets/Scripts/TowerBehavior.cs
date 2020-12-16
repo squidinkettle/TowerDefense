@@ -22,7 +22,7 @@ public class TowerBehavior : MonoBehaviour
 
         waypoint = GetComponent<Waypoint>();
 
-       
+        StartCoroutine(ShootAtEnemies());
        
 
     }
@@ -32,7 +32,7 @@ public class TowerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        IterateEnemies();
+        //IterateEnemies();
 
     }
 
@@ -75,22 +75,52 @@ public class TowerBehavior : MonoBehaviour
 
     void LookAtEnemy(Enemy enemy)
     {
-       
-        var distanceToEnemy= Vector3.Distance(enemy.transform.position, gameObject.transform.position);
-        if(distanceToEnemy < range)
+        if (enemy != null)
         {
-            float yOffset = 5;
+            var distanceToEnemy = Vector3.Distance(enemy.transform.position, gameObject.transform.position);
+            if (distanceToEnemy < range)
+            {
+                var particles = bullets.GetComponent<ParticleSystem>().emission;
+                float yOffset = 5;
 
-            Vector3 enemyPos = new Vector3(
-            enemy.transform.position.x,
-            enemy.transform.position.y + yOffset,
-            enemy.transform.position.z);
+                Vector3 enemyPos = new Vector3(
+                enemy.transform.position.x,
+                enemy.transform.position.y + yOffset,
+                enemy.transform.position.z);
 
-            objectToPan.transform.LookAt(enemyPos);
-      
+                objectToPan.transform.LookAt(enemyPos);
+
+            }
+
         }
-        
 
+    }
+    IEnumerator ShootAtEnemies()
+    {
+        while (true)
+        {
+            print("in enumerator");
+            enemies = FindObjectsOfType<Enemy>();
+            print("Number of enemies:" + enemies.Length);
+            var particles = bullets.GetComponent<ParticleSystem>().emission;
+            foreach (Enemy enemy in enemies)
+            {
+                var enemyDistance = Vector3.Distance(gameObject.transform.position, enemy.transform.position);
+                print("Range: " + range + "Distance: " + enemyDistance);
+                while (enemyDistance < range)
+                {
+                    LookAtEnemy(enemy);
+                    particles.enabled = true;
+
+                    yield return null;
+
+                }
+                particles.enabled = false;
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(0.2f);
+        }
 
     }
 

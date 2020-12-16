@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        print("hit");
+        //print("hit");
         SetHealth(5);
     }
   

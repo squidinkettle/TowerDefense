@@ -24,24 +24,24 @@ public class EnemyMovement : MonoBehaviour
 
         StartCoroutine(PrintAllWayPoints(time));
     }
+    void DestroyWhenReachesEnd()
+    {
+        Destroy(gameObject);
+    }
 
-   
     private void StartPath()
     {
-        pathfinder = FindObjectOfType<PathFinder>();
+        SetupPathfinder();
 
-        //pathfinder.setStartPath(startPos);
-        //pathfinder.setEndPath(endPos);
+        GetPath();
+    }
 
-
-        //pathfinder.SetQueueStart(startPos);
-        pathfinder.FindPath();
-
-
+    private void GetPath()
+    {
         var startingPosition = pathfinder.start;
         var pathfindingGrid = pathfinder.grid;
         var shortestPath = pathfinder.shortestPath;
-       
+
         foreach (Waypoint point in shortestPath)
         {
             path.Add(point);
@@ -51,12 +51,30 @@ public class EnemyMovement : MonoBehaviour
         path.Reverse();
     }
 
+    private void SetupPathfinder()
+    {
+        pathfinder = FindObjectOfType<PathFinder>();
+
+        pathfinder.setStartPath(startPos);
+        pathfinder.setEndPath(endPos);
+
+
+        pathfinder.SetQueueStart(startPos);
+        pathfinder.FindPath();
+    }
+
     IEnumerator PrintAllWayPoints(float time)
     {
   
         foreach (Waypoint waypoint in path)
         {
             transform.position = waypoint.transform.position;
+            var enemyHasReachedDestination = gameObject.transform.position == (pathfinder.grid[endPos].transform.position);
+            if (enemyHasReachedDestination)
+            {
+                DestroyWhenReachesEnd();
+
+            }
             yield return new WaitForSeconds(time);
         }
 

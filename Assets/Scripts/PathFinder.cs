@@ -90,7 +90,7 @@ public class PathFinder : MonoBehaviour
     }
     public void FindPath()
     {
-        print(start + " " + end);
+   
         while (queueCoordinate.Count>0)
         {
 
@@ -107,6 +107,10 @@ public class PathFinder : MonoBehaviour
             FindAdjacentGrid(newPos);
 
         }
+        foreach(var waypoint in grid.Values)
+        {
+            waypoint.isSearched = false;
+        }
 
 
 
@@ -115,7 +119,6 @@ public class PathFinder : MonoBehaviour
     public void FindShortestPath()
     {
         var currentPoint = grid[end];
-        //print(currentPoint.name);
         while (currentPoint != grid[start])
         {
             shortestPath.Add(currentPoint);

@@ -72,14 +72,14 @@ public class EnemyBase : MonoBehaviour
     void GenerateEnemies(Vector2Int start,Vector2Int end )
     {
         PathFinder pathfind = FindObjectOfType<PathFinder>();
-        pathfind.setStartPath(start);
-        pathfind.setEndPath(end);
-        pathfind.SetQueueStart(start);
+        //pathfind.setStartPath(start);
+        //pathfind.setEndPath(end);
+        //pathfind.SetQueueStart(start);
 
         //print("starting pos:" + start + "ending pos: " + end);
         GameObject newEnemy=Instantiate (enemy, transform.position,Quaternion.identity);
 
-        //newEnemy.GetComponent<EnemyMovement>().SetStartEndPosition(start,end);
+        newEnemy.GetComponent<EnemyMovement>().SetStartEndPosition(start,end);
 
     }
 
