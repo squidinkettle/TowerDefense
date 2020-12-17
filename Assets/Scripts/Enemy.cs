@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] ParticleSystem particlesDeath;
     [SerializeField] ParticleSystem particleHit;
     [SerializeField] Transform fxParent;
+    [SerializeField] AudioClip[] soundFX;
 
 
     PlayerBase playerBase;
@@ -27,6 +28,7 @@ public class Enemy : MonoBehaviour
 
     void SetHealth(int change)
     {
+        //GetComponent<AudioSource>().PlayOneShot(soundFX[0]);
         health -= change;
         Vector3 enemyPosition = GetInstantiatePosition(12f);
         var particleH=Instantiate(particleHit, enemyPosition, Quaternion.identity);
@@ -50,6 +52,8 @@ public class Enemy : MonoBehaviour
         playerBase.SetScore(scoreValue);
         Vector3 enemyPos = GetInstantiatePosition(10f);
         var fx=Instantiate(particlesDeath, enemyPos, Quaternion.identity);
+        AudioSource.PlayClipAtPoint(soundFX[1], Camera.main.transform.position);
+
         fx.Play();
         Destroy(fx.gameObject, fx.main.duration);
         fx.transform.parent = fxParent;

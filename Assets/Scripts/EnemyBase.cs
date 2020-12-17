@@ -10,6 +10,7 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] int numberOfWaves;
     [SerializeField] float timer;
     [SerializeField] Transform enemyParent;
+    [SerializeField] AudioClip spawnEnemySFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +23,7 @@ public class EnemyBase : MonoBehaviour
     {
         while (numberOfWaves > 0)
         {
+           GetComponent<AudioSource>().PlayOneShot(spawnEnemySFX);
             SortSpawnAreas();
             numberOfWaves--;
 

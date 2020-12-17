@@ -12,6 +12,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] Vector2Int endPos;
     [SerializeField] float enemySpeed=10f;
     [SerializeField] ParticleSystem damageBase;
+    [SerializeField] AudioClip reachedGoalFX;
 
     PlayerBase playerBase;
 
@@ -36,6 +37,9 @@ public class EnemyMovement : MonoBehaviour
         transform.position.y+10,
         transform.position.z
         );
+
+  
+        AudioSource.PlayClipAtPoint(reachedGoalFX, Camera.main.transform.position);
         var newExplosion=Instantiate(damageBase, newPos,Quaternion.identity);
         newExplosion.Play();
         Destroy(newExplosion.gameObject, newExplosion.main.duration);

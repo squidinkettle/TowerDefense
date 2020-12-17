@@ -11,9 +11,12 @@ public class TowerBehavior : MonoBehaviour
     [SerializeField] float rateOfFire;
     [SerializeField] GameObject objectToPan;
     [SerializeField] GameObject bullets;
+    [SerializeField] AudioClip shootFX;
     Vector3 defaultPos;
     Transform closestEnemy;
 
+    bool firing;
+    bool coroutineStarted;
 
 
     Enemy[] enemiesInMap;
@@ -21,7 +24,7 @@ public class TowerBehavior : MonoBehaviour
     void Start()
     {
 
-
+        StartCoroutine(PlayFireAudio(1 / rateOfFire));
 
 
     }
@@ -52,6 +55,26 @@ public class TowerBehavior : MonoBehaviour
 
     }
 
+    IEnumerator PlayFireAudio(float time)
+    {
+        while (true)
+        {
+            while (firing)
+            {
+
+                coroutineStarted = false;
+                PlayAudio();
+                yield return new WaitForSeconds(time);
+            }
+            yield return null;
+        }
+    }
+
+    void PlayAudio()
+    {
+        GetComponent<AudioSource>().PlayOneShot(shootFX);
+    }
+
     private Transform GetClosestEnemy(Transform closeEnemy, Enemy enemy)
     {
         var distanceToNewEnemy = Vector3.Distance(gameObject.transform.position, enemy.transform.position);
@@ -76,23 +99,29 @@ public class TowerBehavior : MonoBehaviour
     void LookAtEnemy(Transform enemy)
     {
         var particles = bullets.GetComponent<ParticleSystem>().emission;
+ 
+
 
         if (enemy != null)
         {
             var distanceToEnemy = Vector3.Distance(enemy.transform.position, gameObject.transform.position);
             if (distanceToEnemy < range)
             {
+                firing = true;
+            
                 SetupParticleEmission(enemy, particles);
 
             }
             else
             {
+                firing = false;
                 particles.enabled = false;
             }
 
         }
         else
         {
+            firing = false;
             particles.enabled = false;
         }
 
