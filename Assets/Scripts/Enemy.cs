@@ -8,8 +8,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] int maxHealth;
     [SerializeField] ParticleSystem particlesDeath;
     [SerializeField] ParticleSystem particleHit;
-
     [SerializeField] Transform fxParent;
+
+
+    PlayerBase playerBase;
+
     int health;
 
 
@@ -17,6 +20,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerBase = FindObjectOfType<PlayerBase>();
         fxParent = FindObjectOfType<TrashHandler>().transform;
         health = maxHealth;
     }
@@ -35,19 +39,21 @@ public class Enemy : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        //print("hit");
+    
         SetHealth(5);
     }
   
 
     void StartDeath()
     {
+        int scoreValue = 10;
+        playerBase.SetScore(scoreValue);
         Vector3 enemyPos = GetInstantiatePosition(10f);
         var fx=Instantiate(particlesDeath, enemyPos, Quaternion.identity);
         fx.Play();
         Destroy(fx.gameObject, fx.main.duration);
         fx.transform.parent = fxParent;
-        Destroy(gameObject, 2f);
+        Destroy(gameObject);
     }
 
     private Vector3 GetInstantiatePosition(float offset)
