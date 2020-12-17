@@ -16,9 +16,9 @@ public class PlayerBase : MonoBehaviour
     void Start()
     {
         totalScore = 0;
-        score.text = "0";
+        score.text = "Score: 0";
         health = maxHealth;
-        healthText.text = maxHealth.ToString();
+        healthText.text = "Health: "+maxHealth.ToString();
     }
     public void SetScore(int addScore)
     {
@@ -29,7 +29,7 @@ public class PlayerBase : MonoBehaviour
     {
 
         health -= num;
-        healthText.text = health.ToString();
+        healthText.text = "Health: "+health.ToString();
     }
     public int GetHealth()
     {

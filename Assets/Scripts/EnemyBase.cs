@@ -11,26 +11,46 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] float timer;
     [SerializeField] Transform enemyParent;
     [SerializeField] AudioClip spawnEnemySFX;
+
+    [SerializeField] int numberOfEnemies;
     // Start is called before the first frame update
     void Start()
     {
+
         StartCoroutine(SpawnEnemies());
     }
 
-    
+
 
     IEnumerator SpawnEnemies()
     {
-        while (numberOfWaves > 0)
+        int originalNumberEnemy = numberOfEnemies;
+        int multiplier = 2;
+   
+
+    for (int x = 0; x < numberOfWaves; x++)
+    {
+
+        while (numberOfEnemies > 0)
         {
-           GetComponent<AudioSource>().PlayOneShot(spawnEnemySFX);
+            GetComponent<AudioSource>().PlayOneShot(spawnEnemySFX);
             SortSpawnAreas();
-            numberOfWaves--;
+            numberOfEnemies--;
 
             yield return new WaitForSeconds(timer);
         }
 
+            while(FindObjectsOfType<Enemy>().Length > 0)
+            {
+                yield return null;
+            }
+            numberOfEnemies = originalNumberEnemy * multiplier;
+            multiplier++;
 
+
+        }
+        numberOfWaves = -1;
+          
 
     }
     public Vector2Int GetStartPosition(Vector2Int start, int x)
